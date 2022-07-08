@@ -6,13 +6,8 @@ using WebApp1.Data;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("WebApp1ContextConnection");
 builder.Services.AddDbContext<WebApp1Context>(options => options.UseSqlServer(connectionString));
-
-//builder.Services.AddDefaultIdentity<WebApp1User>(options => options.SignIn.RequireConfirmedAccount = true)
-//    .AddEntityFrameworkStores<WebApp1Context>();
-JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
-JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-builder.Services.AddIdentity<WebApp1User, IdentityRole>()
-                .AddEntityFrameworkStores<WebApp1Context>();
+builder.Services.AddDefaultIdentity<WebApp1User>(options => options.SignIn.RequireConfirmedAccount = true)
+        .AddEntityFrameworkStores<WebApp1Context>();
 //注册时的配置选项 去掉密码复杂性要求
 builder.Services.Configure<IdentityOptions>(options =>
 {
