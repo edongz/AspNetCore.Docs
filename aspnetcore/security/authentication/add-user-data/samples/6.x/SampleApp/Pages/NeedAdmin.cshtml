@@ -1,0 +1,7 @@
+@page
+@model WebApp1.Pages.NeedAdminModel
+@{
+    string now = DateTime.Now.ToString("HH:mm:dd fff");
+}
+<h1>这个页面需要管理员权限</h1>
+<h2>@now</h2>
