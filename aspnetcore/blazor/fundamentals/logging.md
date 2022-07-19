@@ -5,7 +5,7 @@ description: Learn about logging in Blazor apps, including configuration and how
 monikerRange: '>= aspnetcore-3.1'
 ms.author: riande
 ms.custom: mvc
-ms.date: 05/31/2022
+ms.date: 07/16/2022
 uid: blazor/fundamentals/logging
 ---
 # ASP.NET Core Blazor logging
@@ -67,6 +67,30 @@ To set the minimum logging level, call <xref:Microsoft.Extensions.Logging.Loggin
 ```csharp
 builder.Logging.SetMinimumLevel(LogLevel.Warning);
 ```
+
+### Log in `Program.cs`
+
+[Logging in `Program.cs`](xref:fundamentals/logging/index#log-in-programcs) is supported in Blazor WebAssembly apps after the <xref:Microsoft.AspNetCore.Components.WebAssembly.Hosting.WebAssemblyHostBuilder> is built using the framework's internal console logger provider ([`WebAssemblyConsoleLoggerProvider` (reference source)](https://github.com/dotnet/aspnetcore/blob/main/src/Components/WebAssembly/WebAssembly/src/Services/WebAssemblyConsoleLoggerProvider.cs)).
+
+In `Program.cs`:
+
+```csharp
+var host = builder.Build();
+
+var logger = host.Services.GetRequiredService<ILoggerFactory>()
+    .CreateLogger<Program>();
+
+logger.LogInformation("Logged after the app is built in Program.cs.");
+
+await host.RunAsync();
+```
+
+Developer tools console output:
+
+> :::no-loc text="info: Program[0]":::  
+> :::no-loc text="Logged after the app is built in Program.cs.":::
+
+[!INCLUDE[](~/includes/aspnetcore-repo-ref-source-links.md)]
 
 ### Log category
 
@@ -535,6 +559,7 @@ var connection = new HubConnectionBuilder()
   * [Chrome DevTools](https://developer.chrome.com/docs/devtools/)
   * [Firefox Developer Tools](https://developer.mozilla.org/docs/Tools)
   * [Microsoft Edge Developer Tools overview](/microsoft-edge/devtools-guide-chromium/)
+* [Blazor samples GitHub repository (`dotnet/blazor-samples`)](https://github.com/dotnet/blazor-samples)
 
 :::moniker-end
 
@@ -558,13 +583,13 @@ The following example:
 
 `Pages/Counter.razor`:
 
-[!code-razor[](~/blazor/samples/5.0/BlazorSample_WebAssembly/Pages/logging/Counter1.razor?highlight=3,16)]
+:::code language="razor" source="~/../blazor-samples/5.0/BlazorSample_WebAssembly/Pages/logging/Counter1.razor" highlight="3,16":::
 
 The following example demonstrates logging with an <xref:Microsoft.Extensions.Logging.ILoggerFactory> in components.
 
 `Pages/Counter.razor`:
 
-[!code-razor[](~/blazor/samples/5.0/BlazorSample_WebAssembly/Pages/logging/Counter2.razor?highlight=3,16-17)]
+:::code language="razor" source="~/../blazor-samples/5.0/BlazorSample_WebAssembly/Pages/logging/Counter2.razor" highlight="3,16-17":::
 
 > [!NOTE]
 > Guidance on popular browsers' developer tools can be found in the documentation of each browser maintainer:
@@ -859,6 +884,7 @@ var connection = new HubConnectionBuilder()
 
 * <xref:fundamentals/logging/index>
 * [Implement a custom logging provider in .NET](/dotnet/core/extensions/custom-logging-provider)
+* [Blazor samples GitHub repository (`dotnet/blazor-samples`)](https://github.com/dotnet/blazor-samples)
 
 :::moniker-end
 
@@ -882,13 +908,13 @@ The following example:
 
 `Pages/Counter.razor`:
 
-[!code-razor[](~/blazor/samples/3.1/BlazorSample_WebAssembly/Pages/logging/Counter1.razor?highlight=3,16)]
+:::code language="razor" source="~/../blazor-samples/3.1/BlazorSample_WebAssembly/Pages/logging/Counter1.razor" highlight="3,16":::
 
 The following example demonstrates logging with an <xref:Microsoft.Extensions.Logging.ILoggerFactory> in components.
 
 `Pages/Counter.razor`:
 
-[!code-razor[](~/blazor/samples/3.1/BlazorSample_WebAssembly/Pages/logging/Counter2.razor?highlight=3,16-17)]
+:::code language="razor" source="~/../blazor-samples/3.1/BlazorSample_WebAssembly/Pages/logging/Counter2.razor" highlight="3,16-17":::
 
 > [!NOTE]
 > Guidance on popular browsers' developer tools can be found in the documentation of each browser maintainer:
@@ -1183,5 +1209,6 @@ var connection = new HubConnectionBuilder()
 
 * <xref:fundamentals/logging/index>
 * [Implement a custom logging provider in .NET](/dotnet/core/extensions/custom-logging-provider)
+* [Blazor samples GitHub repository (`dotnet/blazor-samples`)](https://github.com/dotnet/blazor-samples)
 
 :::moniker-end
