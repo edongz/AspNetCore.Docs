@@ -227,3 +227,4 @@ __pycache__/
 
 # Windows thumbnail cache files
 Thumbs.db
+/aspnetcore/security/authentication/add-user-data/samples/6.x/SampleApp/wwwroot/ExtJS71
