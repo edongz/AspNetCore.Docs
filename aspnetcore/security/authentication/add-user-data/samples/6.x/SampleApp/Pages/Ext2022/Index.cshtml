@@ -1,4 +1,14 @@
-﻿@page
+@page
 @model WebApp1.Pages.Ext2022.IndexModel
 @{
+  Layout = null;
 }
+
+<link rel="stylesheet" href="~/css/ext7.min.css" asp-append-version="false" />
+<script src="~/js/ext7.min.js" asp-append-version="true"></script>
+<script type="text/javascript">
+
+  Ext.onReady(function() {
+      Ext.Msg.alert("Ready", "大雨不停地下……<br/>ExtJS就绪");
+  });
+</script>
