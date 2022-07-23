@@ -174,7 +174,7 @@ Ext.define('MainPanelCls', {
     align: 'stretch'
   },
   bodyPadding: 0,
-  padding: 10,
+  padding: 0,
 
   items: [
     {
@@ -192,7 +192,7 @@ Ext.define('MainPanelCls', {
   }
 });
 
-var mMainPanel, WidthOffset = 20, HeightOffset = 1;
+var mMainPanel, WidthOffset = 1, HeightOffset = 1;
 Ext.onReady(function ()
 {
   mMainPanel = Ext.create('MainPanelCls',
