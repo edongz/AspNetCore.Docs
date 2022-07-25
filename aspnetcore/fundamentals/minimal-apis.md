@@ -799,12 +799,6 @@ The following code uses an [OpenAPI grouping tag](https://swagger.io/docs/specif
 
 [!code-csharp[](minimal-apis/samples/todo/Program.cs?name=snippet_grp)]
 
-<!-- 
-# Differences between minimal APIs and APIs with controllers
-
-Moved to uid: tutorials/min-web-api
--->
-
 :::moniker-end
 
 :::moniker range=">= aspnetcore-7.0"
@@ -1095,6 +1089,33 @@ The following table lists some of the middleware frequently used with minimal AP
 | [Session](xref:fundamentals/app-state) | Provides support for managing user sessions. | <xref:Microsoft.AspNetCore.Builder.SessionMiddlewareExtensions.UseSession%2A> |
 | [Static Files](xref:fundamentals/static-files) | Provides support for serving static files and directory browsing. | <xref:Microsoft.AspNetCore.Builder.StaticFileExtensions.UseStaticFiles%2A>, <xref:Microsoft.AspNetCore.Builder.FileServerExtensions.UseFileServer%2A> |
 | [WebSockets](xref:fundamentals/websockets) | Enables the WebSockets protocol. | <xref:Microsoft.AspNetCore.Builder.WebSocketMiddlewareExtensions.UseWebSockets%2A> |
+
+<a name="rbs"></a>
+
+## Bind the request body as a `Stream` or `PipeReader`
+
+The request body can bind as a [`Stream`](/dotnet/api/system.io.stream) or [`PipeReader`](/dotnet/api/system.io.pipelines.pipereader) to efficiently support scenarios where the user has to process data and:
+
+* Store the data to blob storage or enqueue the data to a queue provider.
+* Process the stored data with a worker process or cloud function.
+
+For example, the data might be enqueued to [Azure Queue storage](/azure/storage/queues/storage-queues-introduction) or stored in [Azure Blob storage](/azure/storage/blobs/storage-blobs-introduction).
+
+The following code implements a background queue:
+
+[!code-csharp[](~/fundamentals/minimal-apis/bindStreamPipeReader/7.0-samples/PipeStreamToBackgroundQueue/BackgroundQueueService.cs)]
+
+The following code binds the request body to a `Stream`:
+
+[!code-csharp[](~/fundamentals/minimal-apis/bindStreamPipeReader/7.0-samples/PipeStreamToBackgroundQueue/Program.cs?name=snippet_1)]
+
+The following code shows the complete `Program.cs` file:
+
+[!code-csharp[](~/fundamentals/minimal-apis/bindStreamPipeReader/7.0-samples/PipeStreamToBackgroundQueue/Program.cs?name=snippet)]
+
+* When reading data, the `Stream` is the same object as `HttpRequest.Body`.
+* The request body isn’t buffered by default. After the body is read, it’s not rewindable. . The stream can't be read multiple times.
+* The `Stream` and `PipeReader` are'nt usable outside of the minimal action handler as the underlying buffers will be disposed or reused.
 
 ## Request handling
 
@@ -1618,6 +1639,14 @@ For more information, see <xref:security/cors?view=aspnetcore-6.0>
 
 <a name="openapi7"></a>
 
+## Typed results
+
+The <xref:Microsoft.AspNetCore.Http.IResult> interface can represent values returned from minimal APIs that don’t utilize the implicit support for JSON serializing the returned object to the HTTP response. The static [Results](/dotnet/api/microsoft.aspnetcore.http.results) class is used to create varying `IResult` objects that represent different types of responses. For example, setting the response status code or redirecting to another URL.
+
+The types implementing `IResult` are public, allowing for type assertions when testing. For example:
+
+[!code-csharp[](~/fundamentals/minimal-apis/misc-samples/typedResults/TypedResultsApiWithTest/Test/WeatherApiTest.cs?name=snippet_1&highlight=7-8)]
+
 ## OpenAPI
 
 An app can describe the [OpenAPI specification](https://swagger.io/specification/) for route handlers using [Swashbuckle](https://www.nuget.org/packages/Swashbuckle.AspNetCore/). The OpenAPI specification defines a standard for documenting RESTful APIs so that end users and other services can examine the capabilities of an API service.
@@ -1634,6 +1663,8 @@ In the preceding highlighted code:
 * `UseSwaggerUI` enables the [Static File Middleware](xref:fundamentals/static-files).
 * <xref:Microsoft.AspNetCore.Builder.RoutingEndpointConventionBuilderExtensions.WithName%2A>: The <xref:Microsoft.AspNetCore.Routing.IEndpointNameMetadata> on the endpoint is used for link generation and is treated as the operation ID in the given endpoint's OpenAPI specification.
 * [`WithOpenApi`](https://github.com/dotnet/aspnetcore/blob/8a4b4deb09c04134f22f8d39aae21d212282004f/src/OpenApi/src/OpenApiRouteHandlerBuilderExtensions.cs) is explained later in this article.
+
+<a name="openapinuget"></a>
 
 ### `Microsoft.AspNetCore.OpenApi` NuGet package
 
