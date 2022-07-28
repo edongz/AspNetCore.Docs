@@ -207,6 +207,23 @@ Ext.onReady(function ()
   //thisForm.setValues(InitCon);
 });
 
+
+//Ext.onReady(function ()
+//{
+//  var vport = new Ext.Viewport({
+//    enableTabScroll: true,
+//    layout: "fit",//采用fit布局
+//    items: [
+//      {
+//        title: "面板的标题",
+//        html: "面板中的主体内容部分",
+//        bbar: [
+//          { text: "按钮1" },
+//          { text: "按钮2" }]
+//      }]
+//  });
+//});
+
 Ext.on('resize', function (width, height)
 {
   mMainPanel.setWidth(window.innerWidth - WidthOffset);
