@@ -201,7 +201,7 @@ Ext.onReady(function ()
       //height: 300,
       width: window.innerWidth - WidthOffset
     });
-
+  Ext.MessageBox.alert("提示", "服务器信息:" + BeginDate);
   //var form1 = Ext.getCmp('SearchConditionForm_id');
   //var thisForm = form1.getForm();
   //thisForm.setValues(InitCon);
